@@ -198,7 +198,7 @@ class ZonalStatistics:
         n_cols = min(3, len(numeric_cols))
         n_rows = (len(numeric_cols) + n_cols - 1) // n_cols
         
-        fig, axes = plt.subplots(n_rows, n_cols, figsize=(5*n_cols, 4*n_rows))
+        fig, axes = plt.subplots(n_rows, n_cols, figsize=(10*n_cols, 8*n_rows))
         if n_rows == 1 and n_cols == 1:
             axes = [axes]
         elif n_rows == 1:
@@ -225,6 +225,10 @@ class ZonalStatistics:
         plt.tight_layout()
         
         if output_path:
+            os.makedirs(os.path.dirname(output_path), exist_ok=True)
+            if os.path.exists(output_path):
+                os.remove(output_path)
+                print(f"Deleted existing file: {output_path}")
             plt.savefig(output_path, dpi=300, bbox_inches='tight')
             print(f"✓ Plot saved to: {output_path}")
         
@@ -244,6 +248,11 @@ class ZonalStatistics:
         try:
             # Create directory if it doesn't exist
             os.makedirs(os.path.dirname(output_path), exist_ok=True)
+
+            # Delete existing file if it exists
+            if os.path.exists(output_path):
+                os.remove(output_path)
+                print(f"Deleted existing file: {output_path}")
             
             # Save to CSV
             stats_df.to_csv(output_path, index=False)
